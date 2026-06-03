@@ -1,0 +1,8 @@
+openai
+groq
+datasets
+pandas
+streamlit
+wandb
+python-dotenv
+tqdm

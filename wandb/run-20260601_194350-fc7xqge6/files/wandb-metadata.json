@@ -1,0 +1,36 @@
+{
+  "os": "Windows-11-10.0.26200-SP0",
+  "python": "CPython 3.12.3",
+  "startedAt": "2026-06-01T14:13:50.388806Z",
+  "program": "C:\\Users\\tharu\\LLM pro vs\\llm-eval-harness\\experiments\\run_eval.py",
+  "codePath": "experiments\\run_eval.py",
+  "codePathLocal": "experiments\\run_eval.py",
+  "email": "gpttarun36@gmail.com",
+  "root": "C:\\Users\\tharu\\LLM pro vs\\llm-eval-harness",
+  "host": "THARUN",
+  "executable": "C:\\Users\\tharu\\LLM pro vs\\llm-eval-harness\\venv\\scripts\\python.exe",
+  "cpu_count": 8,
+  "cpu_count_logical": 12,
+  "gpu": "NVIDIA GeForce RTX 4050 Laptop GPU",
+  "gpu_count": 1,
+  "disk": {
+    "/": {
+      "total": "511001489408",
+      "used": "112771993600"
+    }
+  },
+  "memory": {
+    "total": "16791048192"
+  },
+  "gpu_nvidia": [
+    {
+      "name": "NVIDIA GeForce RTX 4050 Laptop GPU",
+      "memoryTotal": "6439305216",
+      "cudaCores": 2560,
+      "architecture": "Ada",
+      "uuid": "GPU-a8c09249-316d-1070-4878-82458db8b304"
+    }
+  ],
+  "cudaVersion": "13.0",
+  "writerId": "rjt9y6t7np4a9fgvoaqpqe18kjk6fygf"
+}

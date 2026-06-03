@@ -1,0 +1,66 @@
+_wandb:
+    value:
+        cli_version: 0.27.0
+        e:
+            rjt9y6t7np4a9fgvoaqpqe18kjk6fygf:
+                codePath: experiments\run_eval.py
+                codePathLocal: experiments\run_eval.py
+                cpu_count: 8
+                cpu_count_logical: 12
+                cudaVersion: "13.0"
+                disk:
+                    /:
+                        total: "511001489408"
+                        used: "112771993600"
+                email: gpttarun36@gmail.com
+                executable: C:\Users\tharu\LLM pro vs\llm-eval-harness\venv\scripts\python.exe
+                gpu: NVIDIA GeForce RTX 4050 Laptop GPU
+                gpu_count: 1
+                gpu_nvidia:
+                    - architecture: Ada
+                      cudaCores: 2560
+                      memoryTotal: "6439305216"
+                      name: NVIDIA GeForce RTX 4050 Laptop GPU
+                      uuid: GPU-a8c09249-316d-1070-4878-82458db8b304
+                host: THARUN
+                memory:
+                    total: "16791048192"
+                os: Windows-11-10.0.26200-SP0
+                program: C:\Users\tharu\LLM pro vs\llm-eval-harness\experiments\run_eval.py
+                python: CPython 3.12.3
+                root: C:\Users\tharu\LLM pro vs\llm-eval-harness
+                startedAt: "2026-06-01T14:13:50.388806Z"
+                writerId: rjt9y6t7np4a9fgvoaqpqe18kjk6fygf
+        m: []
+        python_version: 3.12.3
+        t:
+            "1":
+                - 49
+                - 51
+            "2":
+                - 49
+                - 51
+            "3":
+                - 2
+                - 13
+                - 16
+            "4": 3.12.3
+            "5": 0.27.0
+            "8":
+                - 3
+            "12": 0.27.0
+            "13": windows-amd64
+models:
+    value:
+        - llama-3.3-70b-versatile
+        - llama-3.1-8b-instant
+        - openai/gpt-oss-20b
+num_samples:
+    value: 20
+strategies:
+    value:
+        - zero_shot
+        - few_shot
+        - chain_of_thought
+task:
+    value: text-to-sql
