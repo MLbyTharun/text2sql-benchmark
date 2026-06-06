@@ -19,13 +19,13 @@ Most teams pick LLMs based on gut feeling. This project builds a data-driven eva
 | Model                   | Strategy         | Exact Match | Execution Accuracy | Latency |
 |-------------------------|------------------|-------------|--------------------|---------|
 | llama-3.1-8b-instant    | chain_of_thought | 15%         | 100%               | 2461ms  |
-| llama-3.1-8b-instant    | few_shot         | 40%         | 95%                | ~1000ms |
+| llama-3.1-8b-instant    | few_shot         | 40%         | 95%                | 1309ms |
 | llama-3.1-8b-instant    | zero_shot        | 20%         | 95%                | 277ms   |
 | llama-3.3-70b-versatile | chain_of_thought | 25%         | 100%               | 2679ms  |
 | llama-3.3-70b-versatile | few_shot         | 45%         | 100%               | 1441ms  |
 | llama-3.3-70b-versatile | zero_shot        | 25%         | 100%               | 405ms   |
 | openai/gpt-oss-20b      | chain_of_thought | 10%         | 100%               | 2599ms  |
-| openai/gpt-oss-20b      | few_shot         | 40%         | 95%                | ~1500ms |
+| openai/gpt-oss-20b      | few_shot         | 40%         | 95%                | 1945ms |
 | openai/gpt-oss-20b      | zero_shot        | 20%         | 100%               | 408ms   |
 
 **Notable insights:**
