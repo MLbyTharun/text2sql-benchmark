@@ -60,6 +60,17 @@ Interestingly, Chain-of-Thought (CoT) prompting resulted in lower Exact Match sc
 
 ---
 
+## Evaluation Summary
+
+The evaluation compared three open-source LLMs across Zero-Shot, Few-Shot, and Chain-of-Thought (CoT) prompting strategies for SQL generation. Results show that Few-Shot prompting consistently achieved the highest Exact Match scores, reaching 45% with Llama 3.3 70B, while maintaining perfect execution accuracy. This suggests that providing examples helps models better align with the expected SQL query structure.
+
+Although Chain-of-Thought prompting achieved 100% Execution Accuracy across all models, it produced lower Exact Match scores (10–25%). This indicates that the models often generated logically correct SQL queries that returned the correct results but differed syntactically from the reference queries. The additional reasoning steps may have encouraged the models to overthink the task and produce more verbose or alternative SQL formulations.
+
+Zero-Shot prompting delivered the fastest response times, with latencies ranging from 277–408 ms, making it suitable for low-latency applications. However, its Exact Match performance was generally lower than Few-Shot prompting.
+
+Overall, Llama 3.3 70B with Few-Shot prompting emerged as the best-performing configuration, achieving the highest Exact Match score (45%) while maintaining 100% Execution Accuracy. The results highlight the trade-off between response speed, query structure alignment, and reasoning complexity when selecting a prompting strategy for text-to-SQL tasks.
+
+---
 ## 🚀 How to Run
 
 **1. Clone the repo**
