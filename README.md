@@ -54,7 +54,7 @@ Most teams pick LLMs based on gut feeling. This project builds a data-driven eva
 - **Token F1** — Token level overlap between generated and expected SQL
 
 ---
-##Why Chain-of-Thought Prompting Underperformed
+## Why Chain-of-Thought Prompting Underperformed
 
 Interestingly, Chain-of-Thought (CoT) prompting resulted in lower Exact Match scores compared to Few-Shot prompting. This may be because the models tend to overthink the task, generating more verbose or complex SQL queries than necessary. While these queries are often logically correct and maintain high Execution Accuracy, they can differ syntactically from the reference SQL, leading to lower Exact Match scores. This highlights that in Text-to-SQL tasks, additional reasoning does not always translate into better benchmark performance.
 
