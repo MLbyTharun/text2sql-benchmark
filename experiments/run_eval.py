@@ -17,9 +17,9 @@ load_dotenv()
 # Define models
 MODELS = [
     GroqModel("openai/gpt-oss-120b"),
-    #GroqModel("llama-3.3-70b-versatile"),
-    #GroqModel("llama-3.1-8b-instant"),
-    #GroqModel("openai/gpt-oss-20b"),
+    GroqModel("llama-3.3-70b-versatile"),
+    GroqModel("llama-3.1-8b-instant"),
+    GroqModel("openai/gpt-oss-20b"),
 ]
 
 def run_eval(num_samples: int = 100):
