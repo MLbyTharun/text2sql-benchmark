@@ -16,7 +16,7 @@ st.set_page_config(
 # Load results
 @st.cache_data
 def load_results():
-    with open("results/raw_results03.json") as f:
+    with open("results/raw_results04.json") as f:
         return pd.DataFrame(json.load(f))
 
 df = load_results()
@@ -63,7 +63,7 @@ leaderboard = filtered.groupby(["model", "strategy"])[
 ].mean().round(3).reset_index()
 
 leaderboard = leaderboard.sort_values("execution_accuracy", ascending=False)
-leaderboard.columns = ["Model", "Strategy", "Exact Match", "Token F1", "Exec Accuracy", "Latency (ms)"]
+leaderboard.columns = ["Model", "Strategy", "Exact Match", "Token F1", "Execution Accuracy", "Latency (ms)"]
 
 st.dataframe(
     leaderboard,
