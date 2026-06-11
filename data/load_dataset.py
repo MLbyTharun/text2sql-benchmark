@@ -14,7 +14,7 @@ def load_sql_data(num_samples: int = 100) -> pd.DataFrame:
     
     print(f"Loaded {len(df)} examples")
     return df
-
+# for testing 
 if __name__ == "__main__":
     df = load_sql_data(10)
     print(df.head(3))

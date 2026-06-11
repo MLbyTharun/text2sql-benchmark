@@ -7,7 +7,7 @@ import wandb
 import pandas as pd
 from tqdm import tqdm
 from dotenv import load_dotenv
-from models.groq_model import GroqModel
+from models.llm_arch import GroqModel,NvidiaModel
 from experiments.prompts import PROMPT_STRATEGIES
 from data.load_dataset import load_sql_data
 from evals.metrics import score_result
@@ -16,16 +16,17 @@ load_dotenv()
 
 # Define models
 MODELS = [
+    NvidiaModel("openai/gpt-oss-120b"),
     GroqModel("llama-3.3-70b-versatile"),
     GroqModel("llama-3.1-8b-instant"),
     GroqModel("openai/gpt-oss-20b"),
 ]
 
-def run_eval(num_samples: int = 20):
+def run_eval(num_samples: int = 100):
     # Initialize W&B
     wandb.init(
-        project="llm-eval-harness",
-        name="sql-eval-run-1",
+        project="llm-eval-harness-v2",
+        name="sql-eval-run-02",
         config={
             "num_samples": num_samples,
             "models": [m.model_name for m in MODELS],
@@ -82,7 +83,7 @@ def run_eval(num_samples: int = 20):
 
     # Save results
     os.makedirs("results", exist_ok=True)
-    with open("results/raw_results.json", "w") as f:
+    with open("results/raw_results03.json", "w") as f:
         json.dump(results, f, indent=2)
 
     # Log summary table to W&B
@@ -99,4 +100,4 @@ def run_eval(num_samples: int = 20):
     return results
 
 if __name__ == "__main__":
-    run_eval(num_samples=20)
+    run_eval(num_samples=100)
