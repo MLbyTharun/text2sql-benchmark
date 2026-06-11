@@ -16,10 +16,10 @@ load_dotenv()
 
 # Define models
 MODELS = [
-    NvidiaModel("openai/gpt-oss-120b"),
-    GroqModel("llama-3.3-70b-versatile"),
-    GroqModel("llama-3.1-8b-instant"),
-    GroqModel("openai/gpt-oss-20b"),
+    GroqModel("openai/gpt-oss-120b"),
+    #GroqModel("llama-3.3-70b-versatile"),
+    #GroqModel("llama-3.1-8b-instant"),
+    #GroqModel("openai/gpt-oss-20b"),
 ]
 
 def run_eval(num_samples: int = 100):
@@ -83,7 +83,7 @@ def run_eval(num_samples: int = 100):
 
     # Save results
     os.makedirs("results", exist_ok=True)
-    with open("results/raw_results03.json", "w") as f:
+    with open("results/raw_results04.json", "w") as f:
         json.dump(results, f, indent=2)
 
     # Log summary table to W&B
