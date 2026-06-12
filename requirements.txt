@@ -1,8 +1,8 @@
-openai~=1.14.0
-groq~=0.9.0
-datasets~=2.19.0
-pandas~=2.2.2
-streamlit~=1.32.0
-wandb~=0.17.0
-python-dotenv~=1.0.1
-tqdm~=4.66.4
+openai
+groq
+datasets
+pandas
+streamlit
+wandb
+python-dotenv
+tqdm
