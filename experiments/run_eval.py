@@ -26,7 +26,7 @@ def run_eval(num_samples: int = 100):
     # Initializing W&B
     wandb.init(
         project="llm-eval-harness-v2",
-        name="sql-eval-run-02",
+        name="sql-eval-run-04",
         config={
             "num_samples": num_samples,
             "models": [m.model_name for m in MODELS],
@@ -83,7 +83,7 @@ def run_eval(num_samples: int = 100):
 
     # Saving the results as an json file
     os.makedirs("results", exist_ok=True)
-    with open("results/raw_results04.json", "w") as f:
+    with open("results/raw_results05.json", "w") as f:
         json.dump(results, f, indent=2)
 
     # Log summary table to W&B

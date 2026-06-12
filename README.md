@@ -1,77 +1,207 @@
-# 🧪 LLM Evaluation Harness — Text-to-SQL Benchmark
+# Text-to-SQL Benchmark Evaluation
 
-A structured evaluation framework that benchmarks Large Language Models on Text-to-SQL generation across multiple models and prompt strategies.
-
----
-
-## 📌 What This Project Does
-
-Most teams pick LLMs based on gut feeling. This project builds a data-driven evaluation system that measures:
-- Which model generates the most accurate SQL
-- Which prompt strategy works best
-- What the cost vs accuracy tradeoff looks like across models
+A systematic evaluation of large language models on the Text-to-SQL task, comparing multiple model architectures across different prompting strategies, with execution-based result verification and an interactive results dashboard.
 
 ---
 
-## 🔍 Key Findings
+## Table of Contents
 
+- [Project Overview](#project-overview)
+- [Dataset](#dataset)
+- [Models Evaluated](#models-evaluated)
+- [Prompting Strategies](#prompting-strategies)
+- [Evaluation Pipeline](#evaluation-pipeline)
+- [Tech Stack](#tech-stack)
+- [Results & Tracking](#results--tracking)
+- [Dashboard](#dashboard)
+- [Threats to Validity](#threats-to-validity)
+- [Future Work](#future-work)
+- [How to run](#How-to-Run)
+- [Project Structute](#Project-Structure)
+---
 
-| Model                   | Strategy         | Exact Match | Execution Accuracy | Latency |
-|-------------------------|------------------|-------------|--------------------|---------|
-| llama-3.1-8b-instant    | chain_of_thought | 15%         | 100%               | 2461ms  |
-| llama-3.1-8b-instant    | few_shot         | 40%         | 95%                | 1309ms |
-| llama-3.1-8b-instant    | zero_shot        | 20%         | 95%                | 277ms   |
-| llama-3.3-70b-versatile | chain_of_thought | 25%         | 100%               | 2679ms  |
-| llama-3.3-70b-versatile | few_shot         | 45%         | 100%               | 1441ms  |
-| llama-3.3-70b-versatile | zero_shot        | 25%         | 100%               | 405ms   |
-| openai/gpt-oss-20b      | chain_of_thought | 10%         | 100%               | 2599ms  |
-| openai/gpt-oss-20b      | few_shot         | 40%         | 95%                | 1945ms |
-| openai/gpt-oss-20b      | zero_shot        | 20%         | 100%               | 408ms   |
+## Project Overview
 
-**Notable insights:**
-- Few-shot prompting outperforms zero-shot and chain-of-thought across all models
-- Chain-of-thought actually hurts SQL generation — models overthink simple queries
-- Llama 3.1 8B is surprisingly competitive with much larger models at lower latency
-- Execution accuracy (98.3% avg) is far higher than exact match (26.7%) — models write functionally correct SQL even when wording differs
+This project benchmarks the capability of large language models (LLMs) to translate natural language questions into executable SQL queries — a task known as **Text-to-SQL**. Rather than relying solely on string-level comparison, the evaluation uses **execution-based assessment** to determine whether a generated query retrieves the correct answer from the database, accounting for the fact that multiple syntactically different queries can be semantically equivalent.
+
+The study covers four modls across three prompting strategies, evaluated under identical conditions for a rigorous and fair comparison.
 
 ---
 
-## 🛠 Tech Stack
+## Dataset
 
-- **Models:** Llama 3.3 70B, Llama 3.1 8B, GPT-OSS 20B via Groq
-- **Dataset:** b-mc2/sql-create-context (HuggingFace)
-- **Metrics:** Exact match, execution accuracy (SQLite), token F1
-- **Experiment Tracking:** Weights & Biases
-- **Dashboard:** Streamlit
-- **Language:** Python 3.12
+Each sample in the benchmark consists of three components:
+
+- A **database schema** describing table and column structure
+- A **natural language question** posed by a user
+- A **ground-truth SQL query** as the reference answer
+
+### Key Challenges
+
+Text-to-SQL is a non-trivial task. The core difficulties include:
+
+- Interpeting the user's intent from loosely worded questions
+- Mapping natural language terms to the correct schema attributes
+- Selecting the right tables and columns among potentially many candidates
+- Generating syntactically valid SQL
+- Handling aggregations, filters, joins, and nested queries correctly
+- Recognizing that multiple SQL formulations can produce identical results
+
+Because of the last point, **execution-based evaluation is used alongside Exact Match** — a generated query us considered correct if it retrieves the same result set as the ground-truth query, even if the SQL text differs.
+
+---
+
+## Models Evaluated
+
+All inference was served through the **Groq API**, which provides optimized low-latency infrastructure for LLM serving. The following models were selected to span a wide range of parameter scales and architectures:
+
+| Model | Parameters |
+|---|---|
+| `llama-3.1-8b-instant` | 8 Billion |
+| `llama-3.3-70b-versatile` | 70 Billion |
+| `openai/gpt-oss-20b` | 20 Billion |
+| `openai/gpt-oss-120b` | 120 Billion |
+
+All models were evaluated under identical prompt conditions and using the same evaluation pipeline.
+
+---
+## Results
+
+All metrics are reported as percentages. Latency is the average inference time per query in milliseconds.
+
+| Model | Strategy | Exact Match (%) | Token F1 (%) | Execution Accuracy (%) | Latency (ms) |
+|---|---|:---:|:---:|:---:|:---:|
+| llama-3.1-8b-instant | Zero Shot | 15.0 | 76.3 | 97.0 | 1786 |
+| llama-3.1-8b-instant | Few Shot | 27.0 | 77.3 | 95.0 | 2463 |
+| llama-3.1-8b-instant | Chain of Thought | 13.0 | 78.3 | 95.0 | 2476 |
+| llama-3.3-70b-versatile | Zero Shot | 16.0 | 75.5 | 98.0 | 1831 |
+| llama-3.3-70b-versatile | Few Shot | 28.0 | 83.0 | 98.0 | 2487 |
+| llama-3.3-70b-versatile | Chain of Thought | 16.0 | 72.5 | 98.0 | 2487 |
+| openai/gpt-oss-20b | Zero Shot | 8.0 | 65.9 | 98.0 | 2150 |
+| openai/gpt-oss-20b | Few Shot | 15.0 | 69.9 | 96.0 | 2903 |
+| openai/gpt-oss-20b | Chain of Thought | 4.0 | 65.7 | 96.0 | 2783 |
+| openai/gpt-oss-120b | Zero Shot | 2.0 | 65.7 | 98.0 | 2272 |
+| openai/gpt-oss-120b | Few Shot | 19.0 | 68.8 | 98.0 | 2915 |
+| openai/gpt-oss-120b | Chain of Thought | 1.0 | 66.1 | 98.0 | 2919 |
+
+> **Note:** Execution Accuracy is the primary correctness signal. Exact Match is a strict string comparison and consistently underestimates true model capability across all models and strategies.
+---
+
+## Prompting Strategies
+
+Three distinct strategies were tested to understand how prompt design affects SQL generation quality.
+
+### Zero-Shot
+
+The model receives only the database schema and the user question — no examples. Performance here reflects the model's raw, pre-trained capabiity for SQL reasoning.
+
+### Few-Shot
+
+A set of example Question–SQL pairs is prepended to the prompt before the target question. This gives the model in-context demonstrations of SQL syntax patterns, schema interpetation, and query structure without any fine-tuning.
+
+### Chain-of-Thought
+
+The model is instructed to reason through intermediate steps — understanding the question, identifing relevant tables and columns, and planning the query — before producing the final SQL. This strategy targets improvement in logical reasoning and schema understanding.
 
 ---
 
-## 📊 Metrics Explained
+## Evaluation Pipeline
 
-- **Exact Match** — Does the generated SQL exactly match the expected SQL?
-- **Execution Accuracy** — Does the SQL actually run and return the correct result?
-- **Token F1** — Token level overlap between generated and expected SQL
+For every combination of model and prompting strategy, the following steps were executed:
 
----
-## Reasoning Does Not Always Improve Text-to-SQL Performance
+1. Provide the input question and schema to the model via the Groq API
+2. Receive the generated SQL query
+3. Execute both the generated query and the ground-truth query against the database using **SQLite3**
+4. Compare execution results to determine correctness
+5. Compute Exact Match and Execution Accuracy metrics
+6. Log all results and aggregate statistics
 
-Interestingly, Chain-of-Thought (CoT) prompting resulted in lower Exact Match scores compared to Few-Shot prompting. This may be because the models tend to overthink the task, generating more verbose or complex SQL queries than necessary. While these queries are often logically correct and maintain high Execution Accuracy, they can differ syntactically from the reference SQL, leading to lower Exact Match scores. This highlights that in Text-to-SQL tasks, additional reasoning does not always translate into better benchmark performance.
-
----
-
-## Evaluation Summary
-
-The evaluation compared three open-source LLMs across Zero-Shot, Few-Shot, and Chain-of-Thought (CoT) prompting strategies for SQL generation. Results show that Few-Shot prompting consistently achieved the highest Exact Match scores, reaching 45% with Llama 3.3 70B, while maintaining perfect execution accuracy. This suggests that providing examples helps models better align with the expected SQL query structure.
-
-Although Chain-of-Thought prompting achieved 100% Execution Accuracy across all models, it produced lower Exact Match scores (10–25%). This indicates that the models often generated logically correct SQL queries that returned the correct results but differed syntactically from the reference queries. The additional reasoning steps may have encouraged the models to overthink the task and produce more verbose or alternative SQL formulations.
-
-Zero-Shot prompting delivered the fastest response times, with latencies ranging from 277–408 ms, making it suitable for low-latency applications. However, its Exact Match performance was generally lower than Few-Shot prompting.
-
-Overall, Llama 3.3 70B with Few-Shot prompting emerged as the best-performing configuration, achieving the highest Exact Match score (45%) while maintaining 100% Execution Accuracy. The results highlight the trade-off between response speed, query structure alignment, and reasoning complexity when selecting a prompting strategy for text-to-SQL tasks.
+The pipeline was kept identical across all experiments to ensure comparability.
 
 ---
-## 🚀 How to Run
+
+## Tech Stack
+
+| Component | Tool |
+|---|---|
+| Inference API | [Groq](https://groq.com) |
+| Database Engine | SQLite3 |
+| Experiment Tracking | Weights & Biases (wandb) |
+| Results Dashboard | Streamlit |
+| Language | Python |
+
+### Why Each Tool
+
+- **Groq** — chosen for its high-throughput, low-latency inference, essential when running evaluations across many model-prompt combinations
+- **SQLite3** — used to execute both reference and generated SQL queries and compare result sets directly, enabling execution-based evaluation
+- **Weights & Biases (wandb)** — tracks all experiment runs, logs per-sample results, metrics, and aggregates, providing full reproducibility and run comparison
+- **Streamlit** — powers an interactive dashboard where users can explore model outputs, compare SQL generations, and view results for every question across all models
+
+---
+
+## Results & Tracking
+
+All runs are tracked with **Weights & Biases**. Each logged run includes:
+
+- Model name and prompting strategy
+- Per-sample generated SQL and ground-truth SQL
+- Execution match result per sample
+- Exact Match result per sample
+- Aggregate accuracy metrics across the dataset
+
+This makes it straightforward to reproduce any run or audit individual predictions.
+
+---
+
+## Dashboard
+
+The **Streamlit** application provides an interactive interface to explore the benchmark results. Users can:
+
+- Browse every question in the benchmark
+- View the generated SQL from all four models side by side
+- See the ground-truth SQL and the execution result comparison
+- Filter by prompting strategy or model
+- Identify where models agree or diverge
+
+This makes the evaluation transoarent and acessible without needing to inspect raw logs or code.
+
+---
+
+## Threats to Validity
+
+The following limitations should be kept in mind when interpreting results.
+
+### Dataset Coverage
+The benchmark may not capture the full diversity of real-world database systems. A larger, more varied dataset could surface additional model strengths and weaknesses.
+
+### Prompt Sensitivity
+LLMs are sensitive to prompt phrasing, schema formatting, and example selection. Results are specific to the prompts used in this study and may shift with minor modifications.
+
+### Exact Match as a Metric
+Exact Match is a strict string-level comparison that can underestimate true model capability. Many generated queries that fail Exact Match still produce correct execution results. Execution Accuracy is the more reliable signal.
+
+### Model Version Dependency
+Evaluation reflects the model versions available on Groq at the time of the study. Future updates to these models may change performance characteristics.
+
+### Single-Benchmark Scope
+All experiments were conducted on one dataset. Generalization to different domains, schemas, or database scales has not been assessed.
+
+---
+
+## Future Work
+
+Several directions are identified for extending this study:
+
+- **Advanced Prompting** — explore Self-Consistency, ReAct, Program-of-Thought, and Tree-of-Thought prompting
+- **Larger Benchmarks** — evaluate on Spider, Spider 2.0, BIRD, and WikiSQL for comparability with published research
+- **Error Taxonomy** — categorize failure modes such as wrong column selection, incorrect aggregation, missing filters, and join errors
+- **Cross-Model Ensembles** — combine outputs from multiple models to improve robustness
+- **Production Database Evaluation** — test on real-world schemas with complex relationships, large table counts, and domain-specific terminology
+
+---
+
+---
+## How to Run
 
 **1. Clone the repo**
 ```bash
@@ -105,7 +235,7 @@ streamlit run dashboard/app.py
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 # Project Structure
 
 ```text
@@ -121,6 +251,7 @@ llm-eval-harness/
 
 ---
 
-## 📈 Experiment Tracking
+## Experiment Tracking
 
 All runs are tracked on Weights & Biases with per-example logging of metrics, latency, and model outputs.
+
