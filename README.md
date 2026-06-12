@@ -1,7 +1,7 @@
 # Text-to-SQL Benchmark Evaluation
 
 A systematic evaluation of large language models on the Text-to-SQL task, comparing multiple model architectures across different prompting strategies, with execution-based result verification and an interactive results dashboard.
-http://10.230.66.27:8501
+
 ---
 
 ## Table of Contents
