@@ -3,7 +3,7 @@
 A systematic evaluation of large language models on the Text-to-SQL task, comparing multiple model architectures across different prompting strategies, with execution-based result verification and an interactive results dashboard.
 
 ---
-
+For live Dashboard :[ Streamlit Dashboard](https://text2sql-benchmark-bea5sgghvpv6uhadfzsou8.streamlit.app/)
 ## Table of Contents
 
 - [Project Overview](#project-overview)
@@ -206,7 +206,7 @@ Several directions are identified for extending this study:
 **1. Clone the repo**
 ```bash
 git clone https://github.com/MLbyTharun/text2sql-benchmark.git
-cd llm-eval-harness
+cd text2sql-benchmark
 ```
 
 **2. Install dependencies**
@@ -246,6 +246,7 @@ text2sql-benchmark/
 ├── models/           # Model abstractions
 ├── dashboard/        # Streamlit UI
 ├── requirements.txt
+└── results/           #json file of actual results
 └── README.md
 ```
 
