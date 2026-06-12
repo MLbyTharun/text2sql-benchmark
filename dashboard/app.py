@@ -7,7 +7,7 @@ import pandas as pd
 import streamlit as st
 
 st.set_page_config(
-    page_title="LLM Eval Harness",
+    page_title="Text2sql-Benchmark",
     page_icon="🧪",
     layout="wide"
 )
@@ -15,13 +15,13 @@ st.set_page_config(
 # function for Load results and is converted in pandas datafreme : it will be cached 
 @st.cache_data
 def load_results():
-    with open("results/raw_results03.json") as f:
+    with open("results/raw_results05.json") as f:
         return pd.DataFrame(json.load(f))
 # results stored in df
 df = load_results()
 
 #       HAED
-st.title("🧪 LLM Evaluation Harness")
+st.title("🧪 Text2sql-Benchmark")
 st.caption("Benchmarking LLMs on Text-to-SQL across models and prompt strategies")
 st.divider()
 
