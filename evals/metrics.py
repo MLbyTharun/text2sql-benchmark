@@ -1,6 +1,8 @@
 import sqlite3
 import re
 
+#   REFER THE DOC!!!!!!!!!!!!!
+
 def exact_match(generated_sql: str, expected_sql: str) -> int:
     """Check if generated SQL exactly matches expected SQL."""
     gen = generated_sql.strip().lower().rstrip(";")
@@ -19,7 +21,7 @@ def token_f1(generated_sql: str, expected_sql: str) -> float:
     common = gen_tokens & exp_tokens
     if not common:
         return 0.0
-
+    #^^^
     precision = len(common) / len(gen_tokens)
     recall = len(common) / len(exp_tokens)
     f1 = 2 * precision * recall / (precision + recall)
@@ -27,7 +29,7 @@ def token_f1(generated_sql: str, expected_sql: str) -> float:
 
 
 def clean_sql(sql: str) -> str:
-    """Remove markdown code blocks if model returns them."""
+    """Removes markdown code if model returns them."""
     sql = re.sub(r"```sql", "", sql)
     sql = re.sub(r"```", "", sql)
     return sql.strip()
@@ -41,29 +43,29 @@ def execution_accuracy(generated_sql: str, expected_sql: str, context: str) -> i
     try:
         generated_sql = clean_sql(generated_sql)
         
-        conn = sqlite3.connect(":memory:")
+        conn = sqlite3.connect(":memory:")#bcz we dont need it after eval
         cursor = conn.cursor()
 
-        # Create tables from context (schema)
+        # Creatimg tables from context
         cursor.executescript(context)
 
-        # Run expected SQL
+        # Running expected SQL
         cursor.execute(expected_sql)
         expected_result = cursor.fetchall()
 
-        # Run generated SQL
+        # Running generated SQL
         cursor.execute(generated_sql)
         generated_result = cursor.fetchall()
 
         conn.close()
-        return 1 if expected_result == generated_result else 0
+        return 1 if expected_result == generated_result else 0 #^^^
 
     except Exception:
         return 0
 
 
 def score_result(result: dict) -> dict:
-    """Score a single result with all metrics."""
+    """Scores a single result with all metrics."""
     generated = result["generated_sql"]
     expected = result["expected_sql"]
     context = result["context"]

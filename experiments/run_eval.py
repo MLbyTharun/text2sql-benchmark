@@ -14,7 +14,7 @@ from evals.metrics import score_result
 
 load_dotenv()
 
-# Define models
+# Defining models
 MODELS = [
     GroqModel("openai/gpt-oss-120b"),
     GroqModel("llama-3.3-70b-versatile"),
@@ -23,7 +23,7 @@ MODELS = [
 ]
 
 def run_eval(num_samples: int = 100):
-    # Initialize W&B
+    # Initializing W&B
     wandb.init(
         project="llm-eval-harness-v2",
         name="sql-eval-run-02",
@@ -35,7 +35,7 @@ def run_eval(num_samples: int = 100):
         }
     )
 
-    # Load dataset
+    # Loading dataset
     df = load_sql_data(num_samples)
 
     results = []
@@ -66,7 +66,7 @@ def run_eval(num_samples: int = 100):
                     "latency_ms": latency,
                 }
 
-                # Score it immediately
+                # Scoring it
                 result = score_result(result)
 
                 # Log to W&B
@@ -81,7 +81,7 @@ def run_eval(num_samples: int = 100):
 
                 results.append(result)
 
-    # Save results
+    # Saving the results as an json file
     os.makedirs("results", exist_ok=True)
     with open("results/raw_results04.json", "w") as f:
         json.dump(results, f, indent=2)
@@ -99,5 +99,6 @@ def run_eval(num_samples: int = 100):
     wandb.finish()
     return results
 
+# test run
 if __name__ == "__main__":
     run_eval(num_samples=100)

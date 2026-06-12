@@ -6,27 +6,26 @@ import json
 import pandas as pd
 import streamlit as st
 
-# Page config
 st.set_page_config(
     page_title="LLM Eval Harness",
     page_icon="🧪",
     layout="wide"
 )
 
-# Load results
+# function for Load results and is converted in pandas datafreme : it will be cached 
 @st.cache_data
 def load_results():
     with open("results/raw_results03.json") as f:
         return pd.DataFrame(json.load(f))
-
+# results stored in df
 df = load_results()
 
-# ── Header ──────────────────────────────────────────────
+#       HAED
 st.title("🧪 LLM Evaluation Harness")
 st.caption("Benchmarking LLMs on Text-to-SQL across models and prompt strategies")
 st.divider()
 
-# ── Sidebar filters ──────────────────────────────────────
+#       FILTERS IN SIDEBAR
 st.sidebar.header("Filters")
 selected_models = st.sidebar.multiselect(
     "Models",
@@ -44,7 +43,7 @@ filtered = df[
     df["strategy"].isin(selected_strategies)
 ]
 
-# ── Top metrics ──────────────────────────────────────────
+#       TOP METRICS/KPIs
 st.subheader("📊 Overall Performance")
 
 col1, col2, col3, col4 = st.columns(4)
@@ -55,25 +54,25 @@ col4.metric("Avg Token F1", f"{filtered['token_f1'].mean():.2f}")
 
 st.divider()
 
-# ── Leaderboard ──────────────────────────────────────────
+#       Leaderboard ; ON EXECUTION ACCURACCY
 st.subheader("🏆 Leaderboard")
 
 leaderboard = filtered.groupby(["model", "strategy"])[
     ["exact_match", "token_f1", "execution_accuracy", "latency_ms"]
 ].mean().round(3).reset_index()
 
-leaderboard = leaderboard.sort_values("execution_accuracy", ascending=False)
-leaderboard.columns = ["Model", "Strategy", "Exact Match", "Token F1", "Execution Accuracy", "Latency (ms)"]
+leaderboard = leaderboard.sort_values("execution_accuracy", ascending=False) #<--
+leaderboard.columns= ["Model", "Strategy", "Exact Match", "Token F1", "Execution Accuracy", "Latency (ms)"]
 
 st.dataframe(
     leaderboard,
-    use_container_width=True,
-    hide_index=True
+    use_container_width = True,
+    hide_index = True
 )
 
 st.divider()
 
-# ── Charts ───────────────────────────────────────────────
+#       CHARTS AND GRAPHS
 st.subheader("📈 Metric Comparison")
 
 col1, col2 = st.columns(2)
@@ -85,10 +84,10 @@ with col1:
 
 with col2:
     st.write("**Exact Match by Prompt Strategy**")
-    chart_data2 = filtered.groupby("strategy")["exact_match"].mean().round(3)
+    chart_data2 =filtered.groupby("strategy")["exact_match"].mean().round(3)
     st.bar_chart(chart_data2)
 
-col3, col4 = st.columns(2)
+col3,col4 = st.columns(2)
 
 with col3:
     st.write("**Avg Latency by Model (ms)**")
@@ -97,13 +96,13 @@ with col3:
 
 with col4:
     st.write("**Token F1 by Model**")
-    f1_data = filtered.groupby("model")["token_f1"].mean().round(3)
+    f1_data=filtered.groupby("model")["token_f1"].mean().round(3)
     st.bar_chart(f1_data)
 
 st.divider()
 
-# ── Per example browser ──────────────────────────────────
-st.subheader("🔍 Per Example Browser")
+#       COMPARISION BLOCK
+st.subheader("🔍 Per Query Comparision")
 st.caption("Pick any question and see what each model generated")
 
 questions = filtered["question"].unique().tolist()
@@ -118,7 +117,7 @@ for _, row in example_df.iterrows():
         col1, col2 = st.columns(2)
         with col1:
             st.write("**Expected SQL**")
-            st.code(row["expected_sql"], language="sql")
+            st.code(row["expected_sql"], language ="sql")
         with col2:
             st.write("**Generated SQL**")
             st.code(row["generated_sql"], language="sql")
