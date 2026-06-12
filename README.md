@@ -205,7 +205,7 @@ Several directions are identified for extending this study:
 
 **1. Clone the repo**
 ```bash
-git clone https://github.com/MLbyTharun/llm-eval-harness.git
+git clone https://github.com/MLbyTharun/text2sql-benchmark.git
 cd llm-eval-harness
 ```
 
@@ -239,7 +239,7 @@ streamlit run dashboard/app.py
 # Project Structure
 
 ```text
-llm-eval-harness/
+text2sql-benchmark/
 ├── data/             # Dataset loading
 ├── evals/            # Metrics and scoring
 ├── experiments/      # Eval runner and prompt strategies
