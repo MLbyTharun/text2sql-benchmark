@@ -3,7 +3,7 @@
 A systematic evaluation of large language models on the Text-to-SQL task, comparing multiple model architectures across different prompting strategies, with execution-based result verification and an interactive results dashboard.
 
 ---
-For live Dashboard :[ Streamlit Dashboard](https://text2sql-benchmark-bea5sgghvpv6uhadfzsou8.streamlit.app/)
+For live Dashboard :[ Streamlit Dashboard](https://text2sql-eval-benchmark.streamlit.app)
 ## Table of Contents
 
 - [Project Overview](#project-overview)
