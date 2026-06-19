@@ -1,7 +1,11 @@
 # Text-to-SQL Benchmark Evaluation
 
 A systematic evaluation of large language models on the Text-to-SQL task, comparing multiple model architectures across different prompting strategies, with execution-based result verification and an interactive results dashboard.
-
+---
+[![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat&logo=python&logoColor=white)](https://python.org)
+[![Groq](https://img.shields.io/badge/Groq-LPU%20Inference-F55036?style=flat)](https://groq.com)
+[![Streamlit](https://img.shields.io/badge/Streamlit-UI-FF4B4B?style=flat&logo=streamlit&logoColor=white)](https://streamlit.io)
+[![Weights & Biases](https://img.shields.io/badge/Weights%20%26%20Biases-Experiment%20Tracking-FFBE00?style=flat&logo=weightsandbiases&logoColor=black)](https://wandb.ai)
 ---
 For live Dashboard :[ Streamlit Dashboard](https://text2sql-benchmark-bea5sgghvpv6uhadfzsou8.streamlit.app/)
 ## Table of Contents
